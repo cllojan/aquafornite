@@ -3,8 +3,11 @@
 import { OrderSkins } from "@/utils/OrderSkins";
 import { useEffect, useState } from "react";
 import Skin from "@/interfaces/skin.interface";
-import {Select} from "@/components/Elements";
-
+import { OwSelect } from "@/components/Elements";
+import Image from "next/image";
+import { Button } from '@heroui/button';
+import { Searchinput } from "@/components/SearchInput";
+import { Input, Select, SelectItem } from "@heroui/react";
 const Skins: React.FC = () => {
 
   const [skins, setSkins] = useState<Record<string, Skin[]>>({});
@@ -23,83 +26,108 @@ const Skins: React.FC = () => {
 
     fetchSkins();
   }, [])
-
+  const categories = [
+    { key: "all", label: "All Categories" },
+    { key: "electronics", label: "Electronics" },
+    { key: "clothing", label: "Clothing" },
+    { key: "furniture", label: "Furniture" },
+    { key: "books", label: "Books" },
+    { key: "sports", label: "Sports" }
+  ];
   return (
-    <main className="p-10 flex flex-col font-display  gap-4">
-      <div className="flex gap-4 horizontal flex-wrap sm:flex-nowrap ">
-
-        <div className="w-full max-w-sm min-w-[200px]">
-          <div className="relative">
-            <input type="text" className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-[#3c5b77] rounded-md pl-3 pr-16 py-2 transition duration-300 ease  focus:outline-none focus:border-[#668eb2] hover:border-[#668eb2]   shadow-sm focus:shadow" placeholder="Buscar por skin" />
-            <button
-              className="absolute right-1 top-1 rounded bg-slate-800 py-1 px-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-              type="button"
-            >
-              Buscar
-            </button>
+    <main className="w-full flex flex-col items-center justify-center min-h-screen bg-background p-2">
+      <div className="w-full bg-content1 p-6 rounded-large shadow-sm">
+        <h2 className="text-xl font-semibold mb-6">Product Search</h2>
+        <div className="flex flex-col md:flex-row gap-4 flex-wrap">
+        <div className="w-full md:flex-1">
+            <Input
+              label="Search"
+              placeholder="Enter keywords..."
+              
+              classNames={{
+                inputWrapper: "shadow-none",
+              }}
+            />
           </div>
+          <div className="w-full md:w-64">
+            <Select
+              label="Category"
+              placeholder="Select category"
+             
+              classNames={{
+                trigger: "shadow-none",
+              }}
+            >
+              {categories.map((item) => (
+                <SelectItem key={item.key} >
+                  {item.label}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
+          <div className="w-full md:w-64">
+            <OwSelect>
+              <option value="">Todas las rarezas</option>
+              <option value="JM">John Mayer</option>
+              <option value="SRV">Stevie Ray Vaughn</option>
+              <option value="JH">Jimi Hendrix</option>
+              <option value="BBK">B.B King</option>
+              <option value="AK">Albert King</option>
+              <option value="BG">Buddy Guy</option>
+              <option value="EC">Eric Clapton</option>
+            </OwSelect>
+          </div>
+
+          <OwSelect>
+            <option value="">Todas las rarezas</option>
+            <option value="JM">John Mayer</option>
+            <option value="SRV">Stevie Ray Vaughn</option>
+            <option value="JH">Jimi Hendrix</option>
+            <option value="BBK">B.B King</option>
+            <option value="AK">Albert King</option>
+            <option value="BG">Buddy Guy</option>
+            <option value="EC">Eric Clapton</option>
+          </OwSelect>
+          <OwSelect>
+            <option value="">Todas las rarezas</option>
+            <option value="JM">John Mayer</option>
+            <option value="SRV">Stevie Ray Vaughn</option>
+            <option value="JH">Jimi Hendrix</option>
+            <option value="BBK">B.B King</option>
+            <option value="AK">Albert King</option>
+            <option value="BG">Buddy Guy</option>
+            <option value="EC">Eric Clapton</option>
+          </OwSelect>
         </div>
+        <ul className="">
 
-        
-        <Select>
-              <option value="">Todas las rarezas</option>
-              <option value="JM">John Mayer</option>
-              <option value="SRV">Stevie Ray Vaughn</option>
-              <option value="JH">Jimi Hendrix</option>
-              <option value="BBK">B.B King</option>
-              <option value="AK">Albert King</option>
-              <option value="BG">Buddy Guy</option>
-              <option value="EC">Eric Clapton</option>
-        </Select>
+          {Object.entries(skins).map(([key, value]) => (
 
-        <Select>
-              <option value="">Todas las rarezas</option>
-              <option value="JM">John Mayer</option>
-              <option value="SRV">Stevie Ray Vaughn</option>
-              <option value="JH">Jimi Hendrix</option>
-              <option value="BBK">B.B King</option>
-              <option value="AK">Albert King</option>
-              <option value="BG">Buddy Guy</option>
-              <option value="EC">Eric Clapton</option>
-        </Select>
-        <Select>
-              <option value="">Todas las rarezas</option>
-              <option value="JM">John Mayer</option>
-              <option value="SRV">Stevie Ray Vaughn</option>
-              <option value="JH">Jimi Hendrix</option>
-              <option value="BBK">B.B King</option>
-              <option value="AK">Albert King</option>
-              <option value="BG">Buddy Guy</option>
-              <option value="EC">Eric Clapton</option>
-        </Select>
-      </div>
-      <ul className="">
+            <div className="flex flex-col " key={key}>
+              <h2 className="text-2xl font-semibold mt-8">{key}</h2>
+              <div className="grid grid-cols-1 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  h-full">
+                {
+                  value.map((skin, idx) => (
 
-        {Object.entries(skins).map(([key, value]) => (
-
-          <div className="flex flex-col " key={key}>
-            <h2 className="text-2xl font-semibold mt-8">{key}</h2>
-            <div className="grid grid-cols-1 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  h-full">
-              {
-                value.map((skin) => (
-
-                  <div style={{ background: skin.colors.color1, backgroundImage: `linear-gradient(180deg,  ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})` }} className="flex-shrink-0 h-70 relative overflow-hidden rounded-lg max-w-xs shadow-lg">
-                    <img className=" h-70 object-cover" src={skin.displayAssets[0].url} alt={skin.displayAssets[0].displayAsset} />
-                    <div className="absolute bottom-[-15] left-[-10] right-0 text-white px-6 pb-6 mt-6 bg-gradient-to-t from-zinc-900 to-slate-100 to-transparent">
-                      <span className="block opacity-75 -mb-1">{skin.price.finalPrice}</span>
-                      <div className="flex justify-between">
-                        <span className="block font-semibold font-roboto text-base truncate">{skin.displayName}</span>
+                    <div key={idx} style={{ background: skin.colors.color1, backgroundImage: `linear-gradient(180deg,  ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})` }} className="flex-shrink-0 h-70 relative overflow-hidden rounded-lg max-w-xs shadow-lg">
+                      <Image layout="fill" objectFit='cover' src={skin.displayAssets[0].url} alt={skin.displayAssets[0].displayAsset} />
+                      <div className="absolute bottom-[-15] left-[-10] right-0 text-white px-6 pb-6 mt-6 bg-gradient-to-t from-zinc-900 to-slate-100 to-transparent">
+                        <span className="block opacity-75 -mb-1">{skin.price.finalPrice}</span>
+                        <div className="flex justify-between">
+                          <span className="block font-semibold font-roboto text-base truncate">{skin.displayName}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
-              }
+                  ))
+                }
+              </div>
+
             </div>
 
-          </div>
+          ))}
+        </ul>
+      </div>
 
-        ))}
-      </ul>
     </main>
   );
 };
