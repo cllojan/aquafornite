@@ -30,16 +30,14 @@ export const SearchIcon = ( props:any) => {
       );
 }
 
-export const Searchinput = () => {
+export const SearchInput = () => {
     return (
-        <Input 
-        
-        placeholder="Enter keywords..."                
-        
-        classNames={{
-          inputWrapper: "shadow-none",
-        }}
-        >
-        </Input>
+        <Input
+              label="Buscar"
+              placeholder="Buscar skin..."              
+              classNames={{
+                inputWrapper: "shadow-none",
+              }}
+        />
     )
 }

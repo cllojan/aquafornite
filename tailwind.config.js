@@ -10,5 +10,24 @@ module.exports = {
     extend: {},
   },
   darkMode: "class",
-  plugins: [heroui()],
+  plugins: [heroui({
+    themes:{
+      light:{
+        colors:{
+          background: "#FAFAFA",
+          foreground: "#18181B",
+          primary:{
+
+          }
+        }
+      },
+      dark:{
+        colors:{
+          background:"#18181B",
+          foreground:"#FAFAFA",
+          primary:{}
+        }
+      }
+    }
+  })],
 };

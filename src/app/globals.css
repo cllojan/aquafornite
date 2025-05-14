@@ -6,8 +6,8 @@
 @config "../../tailwind.config.js";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAFA;
+  --foreground: #18181B;
 }
 
 @theme inline {
@@ -23,9 +23,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #111A22;
-    --foreground: #eef2f6;
-    --header: #1a2733;
+    --background: #18181B;
+    --foreground: #FAFAFA;
+    --header: #27272A;
   }
 }
 
@@ -33,11 +33,4 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: SpaceGrotesk, Arial, Helvetica, sans-serif;
-}
-
-select option {
-  margin: 40px;
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }

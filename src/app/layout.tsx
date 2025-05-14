@@ -29,9 +29,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={` dark ${SpaceGrotesk.variable} dark:bg-headerbackground antialiased`}
+        className={`${SpaceGrotesk.variable}  antialiased`}
       >
         <Providers>
         {children}

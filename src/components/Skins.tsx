@@ -3,14 +3,29 @@
 import { OrderSkins } from "@/utils/OrderSkins";
 import { useEffect, useState } from "react";
 import Skin from "@/interfaces/skin.interface";
-import { OwSelect } from "@/components/Elements";
-import Image from "next/image";
-import { Button } from '@heroui/button';
-import { Searchinput } from "@/components/SearchInput";
-import { Input, Select, SelectItem } from "@heroui/react";
-const Skins: React.FC = () => {
 
+
+import { Button } from '@heroui/button';
+import { Icon } from "@iconify/react";
+import { Input } from "@heroui/react";
+import { Select, SelectSection, SelectItem } from "@heroui/select";
+import {Card, CardHeader, CardBody, CardFooter} from "@heroui/card";
+import {Image} from "@heroui/image";
+const Skins: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [rarity, setRarity] = useState(new Set<string>([]));
+  const [category, setCategory] = useState(new Set<string>([""]));
+  const [sortBy, setSortBy] = useState(new Set(["newest"]));
   const [skins, setSkins] = useState<Record<string, Skin[]>>({});
+
+  const handleSearch = () => {
+    console.log({
+      searchQuery,
+      rarity: Array.from(rarity)[0] || "all",
+      category: Array.from(category)[0] || "all",
+      sortBy: Array.from(sortBy)[0] || "newest"
+    })
+  }
   useEffect(() => {
     const fetchSkins = async () => {
       const response = await fetch('https://fortniteapi.io/v2/shop?lang=es', {
@@ -35,15 +50,16 @@ const Skins: React.FC = () => {
     { key: "sports", label: "Sports" }
   ];
   return (
-    <main className="w-full flex flex-col items-center justify-center min-h-screen bg-background p-2">
-      <div className="w-full bg-content1 p-6 rounded-large shadow-sm">
-        <h2 className="text-xl font-semibold mb-6">Product Search</h2>
+    <main className="w-full flex flex-col items-center justify-center min-h-screen bg-content1 dark:bg-background p-2">
+      <div className="w-full bg-content1 p-6">
+
         <div className="flex flex-col md:flex-row gap-4 flex-wrap">
-        <div className="w-full md:flex-1">
+          <div className="w-full md:flex-1">
             <Input
-              label="Search"
-              placeholder="Enter keywords..."
-              
+              label="Buscar"
+              placeholder="Buscar skin..."
+              value={searchQuery}
+              onValueChange={setSearchQuery}
               classNames={{
                 inputWrapper: "shadow-none",
               }}
@@ -51,55 +67,73 @@ const Skins: React.FC = () => {
           </div>
           <div className="w-full md:w-64">
             <Select
-              label="Category"
-              placeholder="Select category"
-             
+              label={"Rarezas"}
+              placeholder={"Selecionar por rareza"}
+              selectedKeys={rarity}
+              onSelectionChange={(keys) => {
+                setRarity(new Set(keys as Iterable<string>))
+              }}
               classNames={{
                 trigger: "shadow-none",
               }}
             >
               {categories.map((item) => (
-                <SelectItem key={item.key} >
+                <SelectItem key={item.key} textValue={item.label}>
                   {item.label}
                 </SelectItem>
               ))}
             </Select>
           </div>
           <div className="w-full md:w-64">
-            <OwSelect>
-              <option value="">Todas las rarezas</option>
-              <option value="JM">John Mayer</option>
-              <option value="SRV">Stevie Ray Vaughn</option>
-              <option value="JH">Jimi Hendrix</option>
-              <option value="BBK">B.B King</option>
-              <option value="AK">Albert King</option>
-              <option value="BG">Buddy Guy</option>
-              <option value="EC">Eric Clapton</option>
-            </OwSelect>
+            <Select
+              label={"Rarezas"}
+              placeholder={"Selecionar por rareza"}
+              selectedKeys={category}
+              onSelectionChange={(keys) => {
+                setCategory(new Set(keys as Iterable<string>))
+              }}
+              classNames={{
+                trigger: "shadow-none",
+              }}
+            >
+              {categories.map((item) => (
+                <SelectItem key={item.key} textValue={item.label}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </Select>
           </div>
-
-          <OwSelect>
-            <option value="">Todas las rarezas</option>
-            <option value="JM">John Mayer</option>
-            <option value="SRV">Stevie Ray Vaughn</option>
-            <option value="JH">Jimi Hendrix</option>
-            <option value="BBK">B.B King</option>
-            <option value="AK">Albert King</option>
-            <option value="BG">Buddy Guy</option>
-            <option value="EC">Eric Clapton</option>
-          </OwSelect>
-          <OwSelect>
-            <option value="">Todas las rarezas</option>
-            <option value="JM">John Mayer</option>
-            <option value="SRV">Stevie Ray Vaughn</option>
-            <option value="JH">Jimi Hendrix</option>
-            <option value="BBK">B.B King</option>
-            <option value="AK">Albert King</option>
-            <option value="BG">Buddy Guy</option>
-            <option value="EC">Eric Clapton</option>
-          </OwSelect>
+          <div className="w-full md:w-64">
+            <Select
+              label={"Rarezas"}
+              placeholder={"Selecionar por rareza"}
+              selectedKeys={rarity}
+              onSelectionChange={(keys) => {
+                setRarity(new Set(keys as Iterable<string>))
+              }}
+              classNames={{
+                trigger: "shadow-none",
+              }}
+            >
+              {categories.map((item) => (
+                <SelectItem key={item.key} textValue={item.label}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </Select>
+          </div>
+          <div className="w-full  md:w-auto md:self-end">
+            <Button
+              color="primary"
+              className="w-full md:w-auto"
+              onPress={handleSearch}
+              startContent={<Icon icon="lucide:filter" />}
+            >
+              Search
+            </Button>
+          </div>
         </div>
-        <ul className="">
+        <section className="">
 
           {Object.entries(skins).map(([key, value]) => (
 
@@ -109,15 +143,28 @@ const Skins: React.FC = () => {
                 {
                   value.map((skin, idx) => (
 
-                    <div key={idx} style={{ background: skin.colors.color1, backgroundImage: `linear-gradient(180deg,  ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})` }} className="flex-shrink-0 h-70 relative overflow-hidden rounded-lg max-w-xs shadow-lg">
-                      <Image layout="fill" objectFit='cover' src={skin.displayAssets[0].url} alt={skin.displayAssets[0].displayAsset} />
-                      <div className="absolute bottom-[-15] left-[-10] right-0 text-white px-6 pb-6 mt-6 bg-gradient-to-t from-zinc-900 to-slate-100 to-transparent">
-                        <span className="block opacity-75 -mb-1">{skin.price.finalPrice}</span>
-                        <div className="flex justify-between">
-                          <span className="block font-semibold font-roboto text-base truncate">{skin.displayName}</span>
+                    <Card
+                      key={idx}
+                      className="flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden"
+                      style={{
+                        background: skin.colors.color1,
+                        backgroundImage: `linear-gradient(180deg, ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})`
+                      }}
+                    >
+                      <Image
+                        
+                        removeWrapper
+                        alt={skin.displayAssets[0].displayAsset}// add hover zoomed with transition in image
+                        className={`z-0 w-full h-full object-cover `}
+                        src={skin.displayAssets[0].url}
+                      />
+                      <CardFooter className="absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-0 z-10 pb-2">
+                        <div className="flex flex-col">
+                          <span className="text-white/75 text-tiny">{skin.price.finalPrice}</span>
+                          <span className="text-white  font-semibold truncate ellipsis">{skin.displayName}</span>
                         </div>
-                      </div>
-                    </div>
+                      </CardFooter>
+                    </Card>
                   ))
                 }
               </div>
@@ -125,7 +172,7 @@ const Skins: React.FC = () => {
             </div>
 
           ))}
-        </ul>
+        </section>
       </div>
 
     </main>
