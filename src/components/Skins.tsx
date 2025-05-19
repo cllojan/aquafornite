@@ -1,30 +1,27 @@
 'use client'
 
 import { OrderSkins } from "@/utils/OrderSkins";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Skin from "@/interfaces/skin.interface";
-
-
-import { Button } from '@heroui/button';
 import { Icon } from "@iconify/react";
-import { Input } from "@heroui/react";
-import { Select, SelectSection, SelectItem } from "@heroui/select";
-import {Card, CardHeader, CardBody, CardFooter} from "@heroui/card";
-import {Image} from "@heroui/image";
-const Skins: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [rarity, setRarity] = useState(new Set<string>([]));
-  const [category, setCategory] = useState(new Set<string>([""]));
-  const [sortBy, setSortBy] = useState(new Set(["newest"]));
-  const [skins, setSkins] = useState<Record<string, Skin[]>>({});
+import { Image } from "@heroui/image";
+import { useSkinCart } from "@/hooks/useSkinCart";
 
+const Skins: React.FC = () => {
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [rarity, setRarity] = useState(new Set<string>(["all"]));
+  const [category, setCategory] = useState(new Set<string>(["all"]));
+  const [sortBy, setSortBy] = useState(new Set(["newest"]));
+
+  const [skins, setSkins] = useState<Record<string, Skin[]>>({});
+  const [listSkins, setListSkins] = useState<Skin[]>([]);
+
+  const [trigger, setTrigger] = useState<boolean>(false);
+
+  const {addItem} = useSkinCart()
   const handleSearch = () => {
-    console.log({
-      searchQuery,
-      rarity: Array.from(rarity)[0] || "all",
-      category: Array.from(category)[0] || "all",
-      sortBy: Array.from(sortBy)[0] || "newest"
-    })
+    setTrigger(true);
   }
   useEffect(() => {
     const fetchSkins = async () => {
@@ -34,13 +31,32 @@ const Skins: React.FC = () => {
         },
       });
       const data = await response.json();
+      setListSkins(data.shop);
 
-      setSkins(OrderSkins(data.shop));
       console.log(data)
     }
 
     fetchSkins();
-  }, [])
+    setTrigger(false);
+  }, [trigger])
+
+  const filteredSkins = useMemo(() => {
+    return OrderSkins(listSkins, {
+      rarity: Array.from(rarity)[0],
+      category: Array.from(category)[0],
+      sortBy: Array.from(sortBy)[0],
+    })
+
+  }, [listSkins, rarity])
+
+
+  const rari = [
+    { key: "common", label: "Common" },
+    { key: "epic", label: "Epic" },
+    { key: "legendary", label: "Legendary" },
+    { key: "rare", label: "Rare" },
+    { key: "uncommon", label: "Uncommon" },
+  ]
   const categories = [
     { key: "all", label: "All Categories" },
     { key: "electronics", label: "Electronics" },
@@ -55,87 +71,78 @@ const Skins: React.FC = () => {
 
         <div className="flex flex-col md:flex-row gap-4 flex-wrap">
           <div className="w-full md:flex-1">
-            <Input
-              label="Buscar"
+            <input
+              type="Buscar"
               placeholder="Buscar skin..."
-              value={searchQuery}
-              onValueChange={setSearchQuery}
-              classNames={{
-                inputWrapper: "shadow-none",
+              onChange={e => {
+                setSearchQuery(e.target.value)
               }}
+              className=" w-full input"
+
             />
           </div>
           <div className="w-full md:w-64">
-            <Select
-              label={"Rarezas"}
-              placeholder={"Selecionar por rareza"}
-              selectedKeys={rarity}
-              onSelectionChange={(keys) => {
-                setRarity(new Set(keys as Iterable<string>))
-              }}
-              classNames={{
-                trigger: "shadow-none",
+            <select
+              defaultValue=" Pick a color"
+              className=" w-full select"
+              onChange={(e) => {
+                setRarity(new Set([e.target.value]))
               }}
             >
-              {categories.map((item) => (
-                <SelectItem key={item.key} textValue={item.label}>
+              {rari.map((item) => (
+                <option
+                  key={item.label}
+
+                >
                   {item.label}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
           <div className="w-full md:w-64">
-            <Select
-              label={"Rarezas"}
-              placeholder={"Selecionar por rareza"}
-              selectedKeys={category}
-              onSelectionChange={(keys) => {
-                setCategory(new Set(keys as Iterable<string>))
-              }}
-              classNames={{
-                trigger: "shadow-none",
+            <select
+              defaultValue="Pick a color"
+              className=" w-full select"
+              onChange={(e) => {
+                setCategory(new Set([e.target.value]))
               }}
             >
               {categories.map((item) => (
-                <SelectItem key={item.key} textValue={item.label}>
+                <option key={item.key}>
                   {item.label}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
           <div className="w-full md:w-64">
-            <Select
-              label={"Rarezas"}
-              placeholder={"Selecionar por rareza"}
-              selectedKeys={rarity}
-              onSelectionChange={(keys) => {
-                setRarity(new Set(keys as Iterable<string>))
-              }}
-              classNames={{
-                trigger: "shadow-none",
+            <select
+              defaultValue="Pick a color"
+              className=" w-full select"
+              onChange={(e) => {
+                setCategory(new Set([e.target.value]))
               }}
             >
               {categories.map((item) => (
-                <SelectItem key={item.key} textValue={item.label}>
+                <option key={item.key}>
                   {item.label}
-                </SelectItem>
+                </option>
               ))}
-            </Select>
+            </select>
           </div>
+
           <div className="w-full  md:w-auto md:self-end">
-            <Button
+            <button
               color="primary"
-              className="w-full md:w-auto"
-              onPress={handleSearch}
-              startContent={<Icon icon="lucide:filter" />}
+              className="w-full md:w-auto btn btn-primary"
+
             >
-              Search
-            </Button>
+              <Icon icon="lucide:filter" />Search
+            </button>
           </div>
         </div>
         <section className="">
 
-          {Object.entries(skins).map(([key, value]) => (
+          {Object.entries(filteredSkins).map(([key, value]) => (
 
             <div className="flex flex-col " key={key}>
               <h2 className="text-2xl font-semibold mt-8">{key}</h2>
@@ -143,28 +150,30 @@ const Skins: React.FC = () => {
                 {
                   value.map((skin, idx) => (
 
-                    <Card
+                    <div
                       key={idx}
-                      className="flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden"
+                      className="group card image-full flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden cursor-pointer"
                       style={{
                         background: skin.colors.color1,
                         backgroundImage: `linear-gradient(180deg, ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})`
                       }}
                     >
                       <Image
-                        
-                        removeWrapper
-                        alt={skin.displayAssets[0].displayAsset}// add hover zoomed with transition in image
-                        className={`z-0 w-full h-full object-cover `}
-                        src={skin.displayAssets[0].url}
+                        alt={skin.displayAssets[0]?.displayAsset || "https://placehold.co/600x400/EEE/31343C"}
+                        className={`z-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105`}
+                        src={skin.displayAssets[0]?.url || "https://placehold.co/600x400/EEE/31343C"}
                       />
-                      <CardFooter className="absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-0 z-10 pb-2">
+                      <div className="w-full pl-2 pr-2 pb-10  translate-y-8 absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 transition-transform duration-300">
                         <div className="flex flex-col">
                           <span className="text-white/75 text-tiny">{skin.price.finalPrice}</span>
                           <span className="text-white  font-semibold truncate ellipsis">{skin.displayName}</span>
                         </div>
-                      </CardFooter>
-                    </Card>
+                        <button onClick={() => addItem(value[idx])} className=" btn mt-2  w-full  btn-accent text-white font-medium transition-colors">
+                          Agregar al carrito 
+                        </button>
+                      </div>
+                      
+                    </div>
                   ))
                 }
               </div>
@@ -177,6 +186,6 @@ const Skins: React.FC = () => {
 
     </main>
   );
-};
+}
 
 export default Skins;
