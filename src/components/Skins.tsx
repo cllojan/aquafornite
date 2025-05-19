@@ -4,8 +4,9 @@ import { OrderSkins } from "@/utils/OrderSkins";
 import { useEffect, useState, useMemo } from "react";
 import Skin from "@/interfaces/skin.interface";
 import { Icon } from "@iconify/react";
-import { Image } from "@heroui/image";
+
 import { useSkinCart } from "@/hooks/useSkinCart";
+import Image from "next/image";
 
 const Skins: React.FC = () => {
 
@@ -19,11 +20,16 @@ const Skins: React.FC = () => {
 
   const [trigger, setTrigger] = useState<boolean>(false);
 
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+
   const {addItem} = useSkinCart()
   const handleSearch = () => {
     setTrigger(true);
   }
   useEffect(() => {
+    const handleLoad = (time:number) => {
+      setTimeout(() => setIsLoading(false), time) // animación opcional
+    }
     const fetchSkins = async () => {
       const response = await fetch('https://fortniteapi.io/v2/shop?lang=es', {
         headers: {
@@ -32,8 +38,11 @@ const Skins: React.FC = () => {
       });
       const data = await response.json();
       setListSkins(data.shop);
+      if(data.result == true ){
+        handleLoad(800)
+      }
+            
 
-      console.log(data)
     }
 
     fetchSkins();
@@ -65,19 +74,24 @@ const Skins: React.FC = () => {
     { key: "books", label: "Books" },
     { key: "sports", label: "Sports" }
   ];
+  if(isLoading && Object.entries(filteredSkins).length == 0){
+    return <div className="fixed inset-0 bg-neutral z-50 flex justify-center items-center ">
+        <span className="loading loading-spinner text-success loading-lg"></span>
+    </div>
+  }
   return (
-    <main className="w-full flex flex-col items-center justify-center min-h-screen bg-content1 dark:bg-background p-2">
+    <main className="w-full flex flex-col items-center justify-center min-h-screen p-2">
       <div className="w-full bg-content1 p-6">
 
         <div className="flex flex-col md:flex-row gap-4 flex-wrap">
-          <div className="w-full md:flex-1">
+          <div className="w-full md:flex-1 ">
             <input
               type="Buscar"
               placeholder="Buscar skin..."
               onChange={e => {
                 setSearchQuery(e.target.value)
               }}
-              className=" w-full input"
+              className=" w-full input "
 
             />
           </div>
@@ -130,18 +144,10 @@ const Skins: React.FC = () => {
             </select>
           </div>
 
-          <div className="w-full  md:w-auto md:self-end">
-            <button
-              color="primary"
-              className="w-full md:w-auto btn btn-primary"
-
-            >
-              <Icon icon="lucide:filter" />Search
-            </button>
-          </div>
+          
         </div>
         <section className="">
-
+          
           {Object.entries(filteredSkins).map(([key, value]) => (
 
             <div className="flex flex-col " key={key}>
@@ -152,7 +158,7 @@ const Skins: React.FC = () => {
 
                     <div
                       key={idx}
-                      className="group card image-full flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden cursor-pointer"
+                      className="group card image-full flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden cursor-pointer shadow-[0px_0px_80px_-44px_rgba(0,_0,_0,_0.7)]"
                       style={{
                         background: skin.colors.color1,
                         backgroundImage: `linear-gradient(180deg, ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})`
@@ -161,6 +167,9 @@ const Skins: React.FC = () => {
                       <Image
                         alt={skin.displayAssets[0]?.displayAsset || "https://placehold.co/600x400/EEE/31343C"}
                         className={`z-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105`}
+                        objectFit="cover"
+                        fill
+                        priority={true}
                         src={skin.displayAssets[0]?.url || "https://placehold.co/600x400/EEE/31343C"}
                       />
                       <div className="w-full pl-2 pr-2 pb-10  translate-y-8 absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 transition-transform duration-300">
@@ -168,7 +177,7 @@ const Skins: React.FC = () => {
                           <span className="text-white/75 text-tiny">{skin.price.finalPrice}</span>
                           <span className="text-white  font-semibold truncate ellipsis">{skin.displayName}</span>
                         </div>
-                        <button onClick={() => addItem(value[idx])} className=" btn mt-2  w-full  btn-accent text-white font-medium transition-colors">
+                        <button onClick={() => addItem(value[idx])} className=" btn mt-2  w-full  btn-primary text-white font-medium transition-colors">
                           Agregar al carrito 
                         </button>
                       </div>

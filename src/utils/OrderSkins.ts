@@ -3,9 +3,9 @@ import Skin from "@/interfaces/skin.interface";
 
 export function OrderSkins(skins:Skin[],filters: any = {}): Record<string, Skin[]> {
     let itemsFilter = skins.filter(skin => {
-            if(filters.rarity && !skin.rarity?.id.includes(filters.rarity) && filters.rarity !== "all" && skin.rarity.id == null) return;
+            if(filters.rarity && !skin.rarity?.id.includes(filters.rarity) && filters.rarity !== "all" ) return;
             return true
-        })
+    })
     
     
     let groups:Record<string, Skin[]> = {};

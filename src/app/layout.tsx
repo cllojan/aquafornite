@@ -23,16 +23,15 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en" suppressHydrationWarning={true}>
+      
+      <html lang="en" suppressHydrationWarning={true} data-theme="dracula" >
         <body
           className={`${SpaceGrotesk.variable}  antialiased`}
-        >
-          <Providers>            
-            {children}
-          </Providers>
-          
+        >                    
+            {children}          
         </body>
       </html>
+      
     </ClerkProvider>
   );
 }
