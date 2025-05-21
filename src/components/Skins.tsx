@@ -11,36 +11,29 @@ import Image from "next/image";
 const Skins: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [rarity, setRarity] = useState(new Set<string>(["all"]));
-  const [category, setCategory] = useState(new Set<string>(["all"]));
+  const [rarity, setRarity] = useState(new Set<string>(["All"]));
+  const [category, setCategory] = useState(new Set<string>(["All"]));
+
   const [sortBy, setSortBy] = useState(new Set(["newest"]));
 
-  const [skins, setSkins] = useState<Record<string, Skin[]>>({});
+  
   const [listSkins, setListSkins] = useState<Skin[]>([]);
-
+  const [listCategory, setListCategory] = useState<string[]>(["All"]);
   const [trigger, setTrigger] = useState<boolean>(false);
-
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-
+  
   const {addItem} = useSkinCart()
-  const handleSearch = () => {
-    setTrigger(true);
-  }
-  useEffect(() => {
-    const handleLoad = (time:number) => {
-      setTimeout(() => setIsLoading(false), time) // animación opcional
-    }
+  
+  useEffect(() => {    
     const fetchSkins = async () => {
       const response = await fetch('https://fortniteapi.io/v2/shop?lang=es', {
         headers: {
-          authorization: "d60d4e00-59f21374-a1c3d875-f9975241",
+          authorization: `${process.env.APIKEY_FORTNITE}`,
         },
       });
       const data = await response.json();
       setListSkins(data.shop);
-      if(data.result == true ){
-        handleLoad(800)
-      }
+      const { categories: allCategories } = OrderSkins(data.shop);
+      setListCategory(allCategories)
             
 
     }
@@ -56,10 +49,11 @@ const Skins: React.FC = () => {
       sortBy: Array.from(sortBy)[0],
     })
 
-  }, [listSkins, rarity])
+  }, [listSkins, rarity,category])
 
 
   const rari = [
+    { key: "All", label: "All" },
     { key: "common", label: "Common" },
     { key: "epic", label: "Epic" },
     { key: "legendary", label: "Legendary" },
@@ -74,13 +68,13 @@ const Skins: React.FC = () => {
     { key: "books", label: "Books" },
     { key: "sports", label: "Sports" }
   ];
-  if(isLoading && Object.entries(filteredSkins).length == 0){
+  if(Object.entries(filteredSkins).length == 0){
     return <div className="fixed inset-0 bg-neutral z-50 flex justify-center items-center ">
         <span className="loading loading-spinner text-success loading-lg"></span>
     </div>
   }
   return (
-    <main className="w-full flex flex-col items-center justify-center min-h-screen p-2">
+    <main className="w-full flex flex-col  min-h-screen p-2">
       <div className="w-full bg-content1 p-6">
 
         <div className="flex flex-col md:flex-row gap-4 flex-wrap">
@@ -121,9 +115,9 @@ const Skins: React.FC = () => {
                 setCategory(new Set([e.target.value]))
               }}
             >
-              {categories.map((item) => (
-                <option key={item.key}>
-                  {item.label}
+              {listCategory.map((item,inx) => (
+                <option key={inx}>
+                  {item}
                 </option>
               ))}
             </select>
@@ -132,9 +126,7 @@ const Skins: React.FC = () => {
             <select
               defaultValue="Pick a color"
               className=" w-full select"
-              onChange={(e) => {
-                setCategory(new Set([e.target.value]))
-              }}
+              
             >
               {categories.map((item) => (
                 <option key={item.key}>
@@ -148,11 +140,11 @@ const Skins: React.FC = () => {
         </div>
         <section className="">
           
-          {Object.entries(filteredSkins).map(([key, value]) => (
+          {Object.entries(filteredSkins.filteredSkins).map(([key, value]) => (
 
             <div className="flex flex-col " key={key}>
               <h2 className="text-2xl font-semibold mt-8">{key}</h2>
-              <div className="grid grid-cols-1 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5  h-full">
+              <div className=" grid grid-cols-1 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
                 {
                   value.map((skin, idx) => (
 
@@ -166,9 +158,10 @@ const Skins: React.FC = () => {
                     >
                       <Image
                         alt={skin.displayAssets[0]?.displayAsset || "https://placehold.co/600x400/EEE/31343C"}
-                        className={`z-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105`}
+                        className={`z-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-105`}
                         objectFit="cover"
                         fill
+                        sizes="100"
                         priority={true}
                         src={skin.displayAssets[0]?.url || "https://placehold.co/600x400/EEE/31343C"}
                       />
