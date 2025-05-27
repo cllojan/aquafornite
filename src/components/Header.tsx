@@ -5,18 +5,29 @@ import { SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs"
 import { Icon } from "@iconify/react";
 import { useSkinCart } from "@/hooks/useSkinCart";
 import { useTheme } from "next-themes";
-import {ShopCartBold} from "@/components/icons/ShopCartBold"
-import {SunIcon} from "@/components/icons/SunIcon"
-import {MoonIcon} from "@/components/icons/MoonIcon"
+import { ShopCartBold } from "@/components/icons/ShopCartBold"
+import { SunIcon } from "@/components/icons/SunIcon"
+import { MoonIcon } from "@/components/icons/MoonIcon"
+import { saveHistory } from "@/utils/supabase/history";
 
 const Header = () => {
 
-    const [theme, setTheme] = useState('dracula');
+    const [theme, setTheme] = useState('corporate');
     const { user } = useUser();
-    const { items, removeAll } = useSkinCart()    
+    const { items, removeAll } = useSkinCart()
+    const skins = items.map(skin => skin.discount)
+    const total = skins.reduce((total, price) => total + price, 0)
     useEffect(() => {
         document.querySelector('html')?.setAttribute('data-theme', theme);
     }, [theme])
+    const handlesave = async () =>{
+        try{
+            await saveHistory()
+            alert("aaa");
+        }catch(e){
+            console.log(e);
+        }
+    }
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
             <div className="flex-1 flex-row items-center">
@@ -24,31 +35,26 @@ const Header = () => {
             </div>
 
             <div className="flex items-center">
-                <label className="toggle toggle-lg text-base-content">
-                    <input type="checkbox" onClick={() => setTheme(theme === "dracula" ? 'winter' : 'dracula')}/>
-                    <SunIcon/>
-                    <MoonIcon/>
-                </label>
                 <div className="drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
                     <div className="drawer-content">
                         {/* Page content here */}
                         <label htmlFor="my-drawer-4" className="drawer-button btn btn-ghost">
-                            
-                                {
-                                items.length === 0 
-                                ?
-                                <div className=" flex flex-row p-0">
-                                    <Icon icon="solar:cart-large-2-outline" fontSize={28} /> 
-                                </div>
-                                 :
-                                 <div className=" flex flex-row items-center">
-                                    <ShopCartBold/>
-                                    <span className="badge badge-sm badge-secondary">{items.length}</span>
-                                </div>
-                                 }
-                                
-                            
+
+                            {
+                                items.length === 0
+                                    ?
+                                    <div className=" flex flex-row p-0">
+                                        <Icon icon="solar:cart-large-2-outline" fontSize={28} />
+                                    </div>
+                                    :
+                                    <div className=" flex flex-row items-center">
+                                        <ShopCartBold />
+                                        <span className="badge badge-sm badge-secondary">{items.length}</span>
+                                    </div>
+                            }
+
+
                         </label>
                     </div>
                     <div className="drawer-side z-100">
@@ -80,7 +86,7 @@ const Header = () => {
                                             <div className="ml-4 flex flex-1 flex-col">
                                                 <div className="flex justify-between  font-medium ">
                                                     <h3 >{item.displayName}</h3>
-                                                    <p className="ml-4">$90.00</p>
+                                                    <p className="ml-4">{item.discount}</p>
                                                 </div>
                                                 <div className="flex flex-1 items-end justify-between text-sm">
                                                     <p className="text-gray-500"></p>
@@ -95,9 +101,9 @@ const Header = () => {
 
                             </div>
 
-                            <span className="text-lg font-bold">8 Items</span>
-                            <span className="text-info">Subtotal: $999</span>
-                            <button className="btn btn-success btn-block">Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
+                            <span className="text-lg font-bold">{items.length} skins</span>
+                            <span className="text-info text-base ">Total: {total}</span>
+                            <button className="mt-5 btn btn-success btn-block" onClick={handlesave}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
 
                         </div>
@@ -118,14 +124,25 @@ const Header = () => {
                                     Perfil
                                 </a>
                             </li>
+                            <li>
+                                <button
+                                    onClick={() => setTheme(theme === 'corporate' ? 'dark' : 'corporate')}
+                                >
+                                    Dark/Light
+                                </button>
+                            </li>
                             <li><SignOutButton >
                                 Cerrar Sesion
                             </SignOutButton >
                             </li>
                         </ul>
                     </div> :
-                        <div className="ml-5 dropdown dropdown-end">
-                            <a href="/sign-in"><button className="btn btn-primary">Iniciar Sesion  <Icon icon="solar:arrow-right-linear" /></button></a>
+                        <div className=" w-full dropdown dropdown-end">
+                            <SignInButton>
+                                <button className="btn btn-primary">
+                                    Iniciar Session
+                                </button>
+                            </SignInButton>
                         </div>
                 }
 

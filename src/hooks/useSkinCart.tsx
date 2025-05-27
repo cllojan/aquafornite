@@ -2,18 +2,21 @@ import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { showToast } from "nextjs-toast-notify";
 
-import Skin from "@/interfaces/skin.interface";
-
+import Skin, { SkinWithDiscount } from "@/interfaces/skin.interface";
+interface SkinItem extends SkinWithDiscount{
+    quantity:number;
+}
 interface SkinStore {
-    items: Skin[],
-    addItem: (data: Skin) => void
-    removeItem: (id: string) => void
-    removeAll: () => void
+    items: SkinWithDiscount[],    
+    addItem: (data: SkinWithDiscount) => void,
+    removeItem: (id: string) => void,
+    removeAll: () => void,
+    
 }
 
 export const useSkinCart = create(persist<SkinStore>((set,get) => ({
     items:[],
-    addItem:(data:Skin) => {
+    addItem:(data:SkinWithDiscount) => {
         const currentItems = get().items
         const existingItem = currentItems.find((item) => item.mainId === data.mainId)
         if(existingItem){
@@ -31,11 +34,14 @@ export const useSkinCart = create(persist<SkinStore>((set,get) => ({
         })
         console.log(get().items)
     },
+    
     removeItem:(id:string) => {
         set({items:[...get().items.filter(item => item.mainId != id)]})
         console.log(get().items)
     },
     removeAll:() => set({items:[]}),
+    
+    
 }),{
     name:'skin-cart',
     storage:createJSONStorage(() => localStorage)

@@ -1,17 +1,17 @@
 
-import Image from "next/image";
+
 import Header from '@/components/Header';
 import Skins from '@/components/Skins';
-import { Suspense } from 'react'
 
-export default function Home() {
+import { getSkins } from "@/lib/getSkins";
+
+export default async function Home() {
+  const {skins, categories} = await getSkins();
+  
   return (
-    <div className="">           
-     <Suspense fallback={<p>Loading</p>}>
+    <div className="">                
       <Header/>
-      <Skins/>
-     
-     </Suspense>
+      <Skins skins={skins} categories={categories}/ >          
     </div>
   );
 }

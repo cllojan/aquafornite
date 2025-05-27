@@ -26,3 +26,10 @@ export default interface Skin {
         url:string;
     }[];
 }
+
+export interface SkinWithDiscount extends Skin{
+    discount: number;
+}
+export  interface SkinWithBlur extends Skin {
+    blurDataURL: string;
+}

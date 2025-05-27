@@ -3,7 +3,7 @@
 
 @import "tailwindcss";
 @plugin "daisyui"{
-  themes: light --default, dark --prefersdark,dracula;
+  themes: light --default, dark --prefersdark,corporate;
 };
 
 body {

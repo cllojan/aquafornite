@@ -2,6 +2,7 @@
 import Header from '@/components/Header'
 import User from '@/components/user';
 import { getUser } from '@/utils/getUser';
+import { getHistory } from '@/utils/supabase/history';
 import { useUser } from '@clerk/nextjs';
 
 import React, { useEffect, useState } from 'react'
@@ -9,8 +10,11 @@ import React, { useEffect, useState } from 'react'
 export default  function UserPage() {
     
     const { user, isLoaded, isSignedIn } = useUser();
-
-    
+    const [history, setHistory] = useState([]);
+    useEffect(() => {
+        getHistory().then(setHistory as never).catch(console.error)
+    },[])
+    console.log(history)
     return (
 
         <div className="min-h-screen">
