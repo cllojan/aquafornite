@@ -17,6 +17,8 @@
     "@heroui/system": "^2.4.16-beta.1",
     "@heroui/theme": "^2.4.16-beta.1",
     "@plaiceholder/next": "^3.0.0",
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.3.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.8",
     "child_process": "^1.0.2",
@@ -27,6 +29,7 @@
     "plaiceholder": "^3.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "stripe": "^18.1.1",
     "zustand": "^5.0.4"
   },
   "devDependencies": {

@@ -9,7 +9,11 @@ import { ShopCartBold } from "@/components/icons/ShopCartBold"
 import { SunIcon } from "@/components/icons/SunIcon"
 import { MoonIcon } from "@/components/icons/MoonIcon"
 import { saveHistory } from "@/utils/supabase/history";
+import { redirectToCheckout } from "@/lib/stripe/pay";
+import {loadStripe} from "@stripe/stripe-js"
 
+
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
 const Header = () => {
 
     const [theme, setTheme] = useState('corporate');
@@ -20,13 +24,24 @@ const Header = () => {
     useEffect(() => {
         document.querySelector('html')?.setAttribute('data-theme', theme);
     }, [theme])
-    const handlesave = async () =>{
-        try{
+    const handlesave = async () => {
+        try {
             await saveHistory()
             alert("aaa");
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
+    }
+    const handlePay = async () => {
+       const stripe = await stripePromise;
+       const response = await fetch('/api/checkout',{
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json',
+        }
+       })
+       const { sessionId} = await response.json();
+       await stripe?.redirectToCheckout({sessionId});
     }
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
@@ -103,7 +118,7 @@ const Header = () => {
 
                             <span className="text-lg font-bold">{items.length} skins</span>
                             <span className="text-info text-base ">Total: {total}</span>
-                            <button className="mt-5 btn btn-success btn-block" onClick={handlesave}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
+                            <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
 
                         </div>
