@@ -14,7 +14,7 @@ export function OrderSkins(skins: Skin[], filters: any = {}): { filteredSkins: R
 
 
 
-    console.log(filters)
+    
     let filteredSkins: Record<string, SkinWithDiscount[]> = {};
     itemsFilter.forEach((item:any) => {
         const grupo = item.section.name.length <= 2 ? "" : item.section.name;

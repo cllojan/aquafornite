@@ -32,16 +32,25 @@ const Header = () => {
             console.log(e);
         }
     }
+    console.log(items)
     const handlePay = async () => {
        const stripe = await stripePromise;
+       const formatedItems = items.map(item => ({
+        name: item.displayName,
+        price: item.discount,
+        quantity: 1,
+       }))
        const response = await fetch('/api/checkout',{
         method:'POST',
         headers:{
             'Content-Type':'application/json',
-        }
+        },
+        body: JSON.stringify({
+            items: formatedItems,
+          }),
        })
-       const { sessionId} = await response.json();
-       await stripe?.redirectToCheckout({sessionId});
+       const { url } = await response.json();
+       window.location.href = url
     }
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">

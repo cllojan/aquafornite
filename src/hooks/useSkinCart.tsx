@@ -31,13 +31,12 @@ export const useSkinCart = create(persist<SkinStore>((set,get) => ({
         }
         set({
             items:[...get().items,data]
-        })
-        console.log(get().items)
+        })        
     },
     
     removeItem:(id:string) => {
         set({items:[...get().items.filter(item => item.mainId != id)]})
-        console.log(get().items)
+        
     },
     removeAll:() => set({items:[]}),
     
