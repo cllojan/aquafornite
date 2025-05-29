@@ -18,7 +18,7 @@ const Header = () => {
 
     const [theme, setTheme] = useState('corporate');
     const { user } = useUser();
-    const { items, removeAll } = useSkinCart()
+    const { items, removeAll,removeItem } = useSkinCart()
     const skins = items.map(skin => skin.discount)
     const total = skins.reduce((total, price) => total + price, 0)
     useEffect(() => {
@@ -38,6 +38,7 @@ const Header = () => {
        const formatedItems = items.map(item => ({
         name: item.displayName,
         price: item.discount,
+        images:item.displayAssets[0].url,
         quantity: 1,
        }))
        const response = await fetch('/api/checkout',{
@@ -114,7 +115,7 @@ const Header = () => {
                                                 </div>
                                                 <div className="flex flex-1 items-end justify-between text-sm">
                                                     <p className="text-gray-500"></p>
-                                                    <span><Icon icon="solar:trash-bin-2-bold" fontSize={25} /></span>
+                                                    <span className="group cursor-pointer" onClick={e => removeItem(item.mainId)}><Icon className="group-hover:text-error" icon="solar:trash-bin-2-bold" fontSize={25} /></span>
                                                 </div>
                                             </div>
 

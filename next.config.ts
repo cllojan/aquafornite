@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
           protocol: 'https',
           hostname: 'media.fortniteapi.io',              
         },
+        {
+          protocol: 'https',
+          hostname: 'placehold.co',              
+        },
+        {
+          protocol: 'https',
+          hostname: 'fakeimg.pl',
+        },
       ],
 }
 };

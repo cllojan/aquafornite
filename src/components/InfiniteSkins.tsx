@@ -59,7 +59,7 @@ export default function SkinGridInfinite({groupedSkins}:Props){
                           height={300}
                           priority={true}
                           className={`z-0 w-full object-cover h-full transition-transform duration-700 ease-out group-hover:scale-105 `}                          
-                          src={skin.displayAssets[0]?.url || "https://placehold.co/600x400/EEE/31343C"}
+                          src={skin.displayAssets[0]?.url || "https://placehold.co/400x400.png?text=Not+Found"}
                         />
 
 

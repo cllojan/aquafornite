@@ -28,7 +28,7 @@ export function OrderSkins(skins: Skin[], filters: any = {}): { filteredSkins: R
         .sort()
         .flatMap(group => filteredSkins[group]);
 
-    console.log(filteredSkins)
+    
     const categories = ["All", ...Object.keys(filteredSkins)];
 
     return { filteredSkins, categories }

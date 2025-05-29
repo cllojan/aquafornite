@@ -1,6 +1,6 @@
 
 export default function User({data}:any) {
-    console.log(data)
+    
     return (
         <div className="flex p-4 @container">
         <div className="flex w-full flex-col gap-4 items-center">

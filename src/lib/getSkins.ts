@@ -14,7 +14,7 @@ export async function getSkins(){
     //obtener claves para las categorias 
     const skins:SkinWithDiscount[] = skinsRate.map((skin:any)=> ({
         ...skin,
-        discount: skin.price.finalPrice * discountRate,
+        discount: parseFloat((skin.price.finalPrice * discountRate).toFixed(2)),
     })) 
     let filteredSkins: Record<string, Skin[]> = {};
     skins.forEach((item:any) => {

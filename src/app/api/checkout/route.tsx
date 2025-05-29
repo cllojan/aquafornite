@@ -11,8 +11,9 @@ export async function POST(req: NextRequest) {
     const items = body.items as {
       id: string;
       name: string,
-      price: number
-      quantity: number;
+      images:string,
+      price: number,
+      quantity: number,
     }[]
     console.log(items)
   try {
@@ -20,25 +21,27 @@ export async function POST(req: NextRequest) {
     if (!items || items.length === 0) {
       return NextResponse.json({ error: "No hay productos." }, { status: 400 })
     }
-    
+    const LineItems = items.map(item => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+          images:[item.images]
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.quantity,
+    }))
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: items.map(item => ({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.name,
-          },
-          unit_amount: item.price * 100,
-        },
-        quantity: item.quantity,
-      })),
+      line_items: LineItems,
       mode: 'payment',
       success_url: `${req.nextUrl.origin}/success`,
-      cancel_url: `${req.nextUrl.origin}/cancel`,
+      cancel_url: `${req.nextUrl.origin}/`,
     });
-    return NextResponse.json({ url: session.url, status: 200 })
+    return NextResponse.json({ url: session.url },{status: 200})
   } catch (err: any) {
+    console.error(err)
     return NextResponse.json(
       { error: err.message || "Internal server error" },
       { status: 500 }
