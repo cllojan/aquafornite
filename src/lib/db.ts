@@ -9,7 +9,7 @@ export async function query(query:string){
     })
     try{    
         const results = await connection.execute(query);
-        console.log("Conexxion exitosa");
+        console.log("Conexion exitosa");
         connection.end();
         return results
     }catch(error){
