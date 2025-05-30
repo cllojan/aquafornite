@@ -1,7 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
-
-export default function Success(){
+async function loadProducts(){
+    const history = {
+    user_id: 'user_abc123',
+    items: [
+      { name: 'Skin Legendaria', price: 12.99, image: 'https://...' },
+      { name: 'Pickaxe', price: 7.5, image: 'https://...' }
+    ],
+    total: 20.49
+  };
+    const data = await fetch('/api/history',{
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(history)
+    })
+    return data;
+}
+export default async function Success(){
+    const xd = await loadProducts();
+    console.log(xd)
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <div className="max-w-md w-full text-center">
