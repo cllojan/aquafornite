@@ -4,13 +4,10 @@ import { useEffect, useState } from "react";
 import { SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import { Icon } from "@iconify/react";
 import { useSkinCart } from "@/hooks/useSkinCart";
-import { useTheme } from "next-themes";
 import { ShopCartBold } from "@/components/icons/ShopCartBold"
-import { SunIcon } from "@/components/icons/SunIcon"
-import { MoonIcon } from "@/components/icons/MoonIcon"
 import { saveHistory } from "@/utils/supabase/history";
-import { redirectToCheckout } from "@/lib/stripe/pay";
 import {loadStripe} from "@stripe/stripe-js"
+import Link from "next/link";
 
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
@@ -56,7 +53,7 @@ const Header = () => {
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
             <div className="flex-1 flex-row items-center">
-                <p className="font-bold text-inherit">Aquafornais</p>
+                <Link href={'/'} className="font-bold text-inherit">Aquafornais</Link>
             </div>
 
             <div className="flex items-center">
@@ -127,7 +124,7 @@ const Header = () => {
                             </div>
 
                             <span className="text-lg font-bold">{items.length} skins</span>
-                            <span className="text-info text-base ">Total: {total}</span>
+                            <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
                             <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
 
@@ -162,7 +159,7 @@ const Header = () => {
                             </li>
                         </ul>
                     </div> :
-                        <div className=" w-full dropdown dropdown-end">
+                        <div className=" dropdown dropdown-end">
                             <SignInButton>
                                 <button className="btn btn-primary">
                                     Iniciar Session

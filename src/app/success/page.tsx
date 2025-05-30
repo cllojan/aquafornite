@@ -1,5 +1,10 @@
+'use client'
+import { useSkinCart } from "@/hooks/useSkinCart";
+import { useUser } from "@clerk/nextjs";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 async function loadProducts(){
     const history = {
     user_id: 'user_abc123',
@@ -9,7 +14,7 @@ async function loadProducts(){
     ],
     total: 20.49
   };
-    const data = await fetch('/api/history',{
+    const data = await fetch('http://localhost:3000/api/history',{
         method:'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -18,9 +23,55 @@ async function loadProducts(){
     })
     return data;
 }
-export default async function Success(){
-    const xd = await loadProducts();
-    console.log(xd)
+export default  function Success(){
+    
+    const {items, removeAll} =  useSkinCart();
+    const { user,isLoaded } = useUser();
+    const [hasSaved, setHasSaved] = useState(false);
+    
+    useEffect(() => {
+        if (!isLoaded || items.length === 0 || hasSaved) return;
+        const sendToHistory = async () => {
+            if (!user) {
+                console.log("⚠️ Usuario no registrado, no se guardará historial.");
+                removeAll()
+                return;
+              }
+            try {
+                const skinsDiscount = items.map(skin => skin.discount)
+    
+                const history = {
+                    user_id:user?.id,
+                    items: items.map(item => ({
+                        name:item.displayName,
+                        price:item.discount,
+                        image:item.displayAssets[0].url
+                    })),
+                    total:skinsDiscount.reduce((sum ,item) => sum + item,0)
+                }
+                console.log(history)
+                const res = await fetch('/api/history', {
+                    method:"POST",
+                    headers:{
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify(history)
+                })
+
+                const data = await res.json();
+                console.log('Historial guardado', data);
+                
+            }catch(e){
+                console.log("Error al guardar",e);
+            }
+            finally{
+                removeAll()
+                setHasSaved(true)
+            }
+
+        }
+        sendToHistory();
+    },[isLoaded,items,user,hasSaved])
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
             <div className="max-w-md w-full text-center">

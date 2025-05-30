@@ -10,11 +10,11 @@ const connection = mysql.createPool({
 export async function query(sql:string, values?:any[]){
    
     try{    
-        const [rows] = await connection.execute(sql,values);        
-        connection.end();
+        const [rows] = await connection.execute(sql,values);                
         return rows
     }catch(error){
-        console.error("Error ", error);
+        console.error("Error ", error);        
         return {error};
     }
+    
 }

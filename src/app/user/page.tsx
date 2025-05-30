@@ -4,16 +4,37 @@ import User from '@/components/user';
 import { getUser } from '@/utils/getUser';
 import { getHistory } from '@/utils/supabase/history';
 import { useUser } from '@clerk/nextjs';
-
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { tr } from 'framer-motion/client';
+import { format } from "date-fns";
 import React, { useEffect, useState } from 'react'
+interface HistoryItems{
+    name:string,
+    image:string,
+    price:number
 
-export default  function UserPage() {
-    
+}
+interface History {
+    id:number,
+    items:HistoryItems[],
+    total:number,
+    created_at:string
+
+}
+export default function UserPage() {
+
     const { user, isLoaded, isSignedIn } = useUser();
-    const [history, setHistory] = useState([]);
+    const [history, setHistory] = useState<History[]>([]);
     useEffect(() => {
-        getHistory().then(setHistory as never).catch(console.error)
-    },[])
+        if (!isLoaded || !user) return;
+        const fetchHistory = async () => {
+            const res = await fetch(`/api/history?user_id=${user?.id}`)
+
+            const data = await res.json();
+            setHistory(data.history)
+        }
+        fetchHistory()
+    }, [isLoaded, user])
     console.log(history)
     return (
 
@@ -21,162 +42,63 @@ export default  function UserPage() {
             <Header />
             <div className="gap-1 h-fullpx-6 flex flex-1 justify-center py-5">
                 <div className="layout-content-container flex flex-col max-w-[920px] flex-1">
-                    <User data={user}/> 
+                    <User data={user} />
                     <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Historial de compra</h2>
                     <div className="overflow-x-auto">
                         <table className="table">
                             {/* head */}
                             <thead>
                                 <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" className="checkbox" />
-                                        </label>
-                                    </th>
-                                    <th>Name</th>
-                                    <th>Job</th>
-                                    <th>Favorite Color</th>
-                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Skins</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {/* row 1 */}
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" className="checkbox" />
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src="https://img.daisyui.com/images/profile/demo/2@94.webp"
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">Hart Hagerty</div>
-                                                <div className="text-sm opacity-50">United States</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        Zemlak, Daniel and Leannon
-                                        <br />
-                                        <span className="badge badge-ghost badge-sm">Desktop Support Technician</span>
-                                    </td>
-                                    <td>Purple</td>
-                                    <th>
-                                        <button className="btn btn-ghost btn-xs">details</button>
-                                    </th>
-                                </tr>
-                                {/* row 2 */}
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" className="checkbox" />
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src="https://img.daisyui.com/images/profile/demo/3@94.webp"
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">Brice Swyre</div>
-                                                <div className="text-sm opacity-50">China</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        Carroll Group
-                                        <br />
-                                        <span className="badge badge-ghost badge-sm">Tax Accountant</span>
-                                    </td>
-                                    <td>Red</td>
-                                    <th>
-                                        <button className="btn btn-ghost btn-xs">details</button>
-                                    </th>
-                                </tr>
-                                {/* row 3 */}
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" className="checkbox" />
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src="https://img.daisyui.com/images/profile/demo/4@94.webp"
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">Marjy Ferencz</div>
-                                                <div className="text-sm opacity-50">Russia</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        Rowe-Schoen
-                                        <br />
-                                        <span className="badge badge-ghost badge-sm">Office Assistant I</span>
-                                    </td>
-                                    <td>Crimson</td>
-                                    <th>
-                                        <button className="btn btn-ghost btn-xs">details</button>
-                                    </th>
-                                </tr>
-                                {/* row 4 */}
-                                <tr>
-                                    <th>
-                                        <label>
-                                            <input type="checkbox" className="checkbox" />
-                                        </label>
-                                    </th>
-                                    <td>
-                                        <div className="flex items-center gap-3">
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src="https://img.daisyui.com/images/profile/demo/5@94.webp"
-                                                        alt="Avatar Tailwind CSS Component" />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="font-bold">Yancy Tear</div>
-                                                <div className="text-sm opacity-50">Brazil</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        Wyman-Ledner
-                                        <br />
-                                        <span className="badge badge-ghost badge-sm">Community Outreach Specialist</span>
-                                    </td>
-                                    <td>Indigo</td>
-                                    <th>
-                                        <button className="btn btn-ghost btn-xs">details</button>
-                                    </th>
-                                </tr>
+                                {/* row 1<th>
+                                        <details className="dropdown bg-transparent">
+                                            <summary className="btn m-1 bg-transparent border-none">open or close</summary>
+                                            <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                                <li><a>Item 1</a></li>
+                                                <li><a>Item 2</a></li>
+                                            </ul>
+                                        </details>
+                                    </th> */}
+                                {history?.map((items, idx) => (
+                                    <tr key={idx}>
+                                        <td>{idx + 1}</td>
+                                        <td>
+                                        <details className="dropdown bg-transparent">
+                                            <summary className="btn m-1 bg-transparent border-none">Skins compradas <Icon icon="solar:alt-arrow-down-outline" className="mt-1" width="20" height="20"  /></summary>
+                                            <ul className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                               {items.items.map((item,inx ) => (                                                
+                                                    <li  key={inx} className="flex flex-row nowrap">{item.name} <span className="badge badge-soft badge-info">{item.price}$</span></li>
+                                                
+                                               ))}
+                                            </ul>
+                                        </details>
+                                        </td>
+                                        <td>
+                                            <span className="badge badge-outline badge-success">{items.total}$</span> 
+                                        </td>
+                                        <td>{format(new Date(items.created_at), 'yyyy-MM-dd / HH:MM')}</td>
+                                        <th>
+                                            <button className="btn btn-ghost btn-xs disable">View</button>
+                                        </th>
+                                    </tr>
+                                ))}
+
                             </tbody>
                             {/* foot */}
                             <tfoot>
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Job</th>
-                                    <th>Favorite Color</th>
-                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Skins</th>
+                                    <th>Total</th>
+                                    <th>Fecha</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </tfoot>
                         </table>
