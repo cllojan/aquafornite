@@ -58,12 +58,12 @@ export default function SkinGridInfinite({groupedSkins}:Props){
                           width={400}
                           height={300}
                           priority={true}
-                          className={`z-0 w-full object-cover h-full transition-transform duration-700 ease-out group-hover:scale-105 active:scale-105 `}                          
+                          className={`z-0 w-full object-cover h-full transition-transform duration-700 ease-out group-hover:scale-105 active:scale-105 `}
                           src={skin.displayAssets[0]?.url || "https://placehold.co/400x400.png?text=Not+Found"}
                         />
 
 
-                        <div className="w-full pl-2 pr-2 pb-10  translate-y-8 absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 transition-transform duration-300">
+                        <div className="w-full pl-2 pr-2 pb-10  translate-y-8 absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 active:-translate-y-8 transition-transform duration-300">
                           <div className="flex flex-col">
                             <span className="text-white/75 text-sm">{skin.price.finalPrice} V-BUCKS - {skin.discount} USD</span>
                             <span className="text-white  font-semibold truncate ellipsis">{skin.displayName}</span>
