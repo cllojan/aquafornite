@@ -53,7 +53,8 @@ const Header = () => {
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
             <div className="flex-1 flex-row items-center">
-                <p className="font-bold text-inherit">Aquafornais</p>
+
+                <img src="favicon.ico" alt="icon"  />
             </div>
 
             <div className="flex items-center">
@@ -132,11 +133,22 @@ const Header = () => {
                                 }
 
                             </div>
-
+                            {
+                                items.length == 0 ? 
+                                
+                                    ''
+                                    :
+                                    (
+                                        <>
+                                        
                             <span className="text-lg font-bold">{items.length} skins</span>
-                            <span className="text-info text-base ">Total: {total}</span>
+                            <span className="text-info text-base ">Total: {total.toString(2)}</span>
                             <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
+                            </>
+                                    )
+                                
+                            }
 
                         </div>
 
