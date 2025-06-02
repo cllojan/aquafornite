@@ -6,8 +6,8 @@ import { Icon } from "@iconify/react";
 import { useSkinCart } from "@/hooks/useSkinCart";
 import { ShopCartBold } from "@/components/icons/ShopCartBold"
 import { saveHistory } from "@/utils/supabase/history";
+import { redirectToCheckout } from "@/lib/stripe/pay";
 import {loadStripe} from "@stripe/stripe-js"
-import Link from "next/link";
 
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
@@ -15,7 +15,7 @@ const Header = () => {
 
     const [theme, setTheme] = useState('corporate');
     const { user } = useUser();
-    const { items, removeAll,removeItem } = useSkinCart()
+    const { items, removeAll, removeItem } = useSkinCart()
     const skins = items.map(skin => skin.discount)
     const total = skins.reduce((total, price) => total + price, 0)
     useEffect(() => {
@@ -31,29 +31,29 @@ const Header = () => {
     }
     console.log(items)
     const handlePay = async () => {
-       const stripe = await stripePromise;
-       const formatedItems = items.map(item => ({
-        name: item.displayName,
-        price: item.discount,
-        images:item.displayAssets[0].url,
-        quantity: 1,
-       }))
-       const response = await fetch('/api/checkout',{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-        },
-        body: JSON.stringify({
-            items: formatedItems,
-          }),
-       })
-       const { url } = await response.json();
-       window.location.href = url
+        const stripe = await stripePromise;
+        const formatedItems = items.map(item => ({
+            name: item.displayName,
+            price: item.discount,
+            images: item.displayAssets[0].url,
+            quantity: 1,
+        }))
+        const response = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                items: formatedItems,
+            }),
+        })
+        const { url } = await response.json();
+        window.location.href = url
     }
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
             <div className="flex-1 flex-row items-center">
-                <Link href={'/'} className="font-bold text-inherit">Aquafornais</Link>
+                <p className="font-bold text-inherit">Aquafornais</p>
             </div>
 
             <div className="flex items-center">
@@ -93,38 +93,48 @@ const Header = () => {
                                 </div>
                             </div>
                             <div className="flex w-full flex-col">
-                                {items.map((item, inx) => (
-                                    <div className="" key={inx}>
-                                        <div className="w-full flex flex-row ">
-                                            <div
-                                                className="size-24 shrink-0 overflow-hidden rounded-md "
-                                                style={{
-                                                    background: item.colors.color1,
-                                                    backgroundImage: `linear-gradient(180deg, ${item.colors.color1} 0%, ${item.colors.color2} 50%, ${item.colors.color3})`
-                                                }}
-                                            >
-                                                <img className="size-full object-cover" src={item.displayAssets[0].url} alt="" />
-                                            </div>
-                                            <div className="ml-4 flex flex-1 flex-col">
-                                                <div className="flex justify-between  font-medium ">
-                                                    <h3 >{item.displayName}</h3>
-                                                    <p className="ml-4">{item.discount}</p>
-                                                </div>
-                                                <div className="flex flex-1 items-end justify-between text-sm">
-                                                    <p className="text-gray-500"></p>
-                                                    <span className="group cursor-pointer" onClick={e => removeItem(item.mainId)}><Icon className="group-hover:text-error" icon="solar:trash-bin-2-bold" fontSize={25} /></span>
-                                                </div>
-                                            </div>
+                                {
+                                    items.length === 0
+                                        ?
+                                        (<div className="flex flex-col justify-center gap-7 items-center">
+                                            <Icon icon="bi:cart-x" fontSize={75} />
+                                            <h1 className="text-lg text-center">Carrito de compras <span className="text-error text-center text-bold">vacio!</span></h1>
+                                            <p className="text-center">Agrega algunos productos antes de proceder con la compra </p>
+                                        </div>) :
+                                        items.map((item, inx) => (
+                                            <div className="" key={inx}>
+                                                <div className="w-full flex flex-row ">
+                                                    <div
+                                                        className="size-24 shrink-0 overflow-hidden rounded-md "
+                                                        style={{
+                                                            background: item.colors.color1,
+                                                            backgroundImage: `linear-gradient(180deg, ${item.colors.color1} 0%, ${item.colors.color2} 50%, ${item.colors.color3})`
+                                                        }}
+                                                    >
+                                                        <img className="size-full object-cover" src={item.displayAssets[0].url} alt="" />
+                                                    </div>
+                                                    <div className="ml-4 flex flex-1 flex-col">
+                                                        <div className="flex justify-between  font-medium ">
+                                                            <h3 >{item.displayName}</h3>
+                                                            <p className="ml-4">{item.discount}</p>
+                                                        </div>
+                                                        <div className="flex flex-1 items-end justify-between text-sm">
+                                                            <p className="text-gray-500"></p>
+                                                            <span className="group cursor-pointer" onClick={e => removeItem(item.mainId)}><Icon className="group-hover:text-error" icon="solar:trash-bin-2-bold" fontSize={25} /></span>
+                                                        </div>
+                                                    </div>
 
-                                        </div>
-                                        <div className=" divider"></div>
-                                    </div>
-                                ))}
+                                                </div>
+                                                <div className=" divider"></div>
+                                            </div>
+                                        ))
+
+                                }
 
                             </div>
 
                             <span className="text-lg font-bold">{items.length} skins</span>
-                            <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
+                            <span className="text-info text-base ">Total: {total}</span>
                             <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
 
