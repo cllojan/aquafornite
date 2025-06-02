@@ -13,5 +13,9 @@ module.exports = {
     extend: {},
   },
   darkMode: "class",
-  
+  plugins:[
+    function({}){
+      addVariant("group-active", ".group-active &")
+    }
+  ]
 };
