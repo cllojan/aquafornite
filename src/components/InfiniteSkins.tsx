@@ -58,6 +58,9 @@ export default function SkinGridInfinite({groupedSkins}:Props){
                     return (
                       <div
                         key={idx}
+                        onClick={() => { 
+                          if (isMobile) addItem(skin)
+                        }}
                         className="group card image-full flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden cursor-pointer shadow-[0px_0px_80px_-44px_rgba(0,_0,_0,_0.7)]"
                         style={{
                           background: skin.colors.color1,
