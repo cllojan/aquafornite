@@ -1,7 +1,12 @@
 import Skin, { SkinWithDiscount } from "@/interfaces/skin.interface";
 
 
-export function OrderSkins(skins: Skin[], filters: any = {}): { filteredSkins: Record<string, SkinWithDiscount[]>; categories: string[] } {
+export function OrderSkins(skins: SkinWithDiscount[], filters:{
+    search? : string;
+    rarity? : string;
+    category? : string;
+    sortBy?: string;
+} = {}): { filteredSkins: Record<string, SkinWithDiscount[]>; categories: string[] } {
     let itemsFilter: Skin[] = skins
 
     itemsFilter = skins.filter(skin => {
@@ -24,12 +29,33 @@ export function OrderSkins(skins: Skin[], filters: any = {}): { filteredSkins: R
         filteredSkins[grupo].push(item);
     })
 
-    const ordered = Object.keys(filteredSkins)
-        .sort()
-        .flatMap(group => filteredSkins[group]);
+    const sortFn = (a: SkinWithDiscount, b:SkinWithDiscount ) => {
+        switch(filters.sortBy){
+            case 'price_asc':
+                return a.discount - b.discount;                
+            case 'price_desc':
+                return b.discount - a.discount;            
+            default:
+                return 0;
 
+        }
+    }
+
+    for (const group in filteredSkins){
+        filteredSkins[group] = filteredSkins[group].sort(sortFn)
+    }
+
+    const groupkeys = Object.keys(filteredSkins).sort((a,b) => {
+        if(filters.sortBy === 'name_desc') return b.localeCompare(a);
+        if(filters.sortBy === 'name_asc') return a.localeCompare(b);
+        return 0;
+    })
     
-    const categories = ["All", ...Object.keys(filteredSkins)];
+    const orderedFilteredSkins: Record<string, SkinWithDiscount[]> = {};
+    for(const key of groupkeys){
+        orderedFilteredSkins[key] = filteredSkins[key];
+    }
+    const categories = ["All", ...Object.keys(groupkeys)];
 
-    return { filteredSkins, categories }
+    return { filteredSkins:orderedFilteredSkins, categories }
 }
