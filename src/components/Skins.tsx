@@ -58,9 +58,10 @@ const Skins = ({skins,categories } :{skins:SkinWithDiscount[],categories:string[
     <main className="w-full flex flex-col  min-h-screen p-2">
       <div className="w-full bg-content1 p-6">
 
-        <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4 flex-wrap">
+        <form className="flex flex-col md:flex-row gap-4 flex-wrap">
           <div className="w-full md:flex-1 ">
             <input
+              onChange={e=> setSearchQuery(e.target.value)}
               type="search"
               placeholder="Buscar skin..."
               className=" w-full input"
@@ -71,6 +72,7 @@ const Skins = ({skins,categories } :{skins:SkinWithDiscount[],categories:string[
             <select
               defaultValue=" Pick a color"
               className=" w-full select"
+              onChange={e => setRarity(e.target.value)}
               name="rarity"
             >
               {rari.map((item) => (
@@ -85,7 +87,7 @@ const Skins = ({skins,categories } :{skins:SkinWithDiscount[],categories:string[
           </div>
           <div className="w-full md:w-64">
             <select
-
+              onChange={e=>setCategory(e.target.value)}
               className=" w-full select"
               name="category"
             >
@@ -117,10 +119,11 @@ const Skins = ({skins,categories } :{skins:SkinWithDiscount[],categories:string[
               ))}
             </select>
           </div>
-          */}
-          <div className="w-full md:w-auto md:self-end">
+           <div className="w-full md:w-auto md:self-end">
             <button className="btn btn-active btn-primary" type="submit">Filtrar</button>
           </div>
+          */}
+         
 
         </form>
        
