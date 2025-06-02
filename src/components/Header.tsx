@@ -142,7 +142,7 @@ const Header = () => {
                                         <>
                                         
                             <span className="text-lg font-bold">{items.length} skins</span>
-                            <span className="text-info text-base ">Total: {total.toString(2)}</span>
+                            <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
                             <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
                             <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
                             </>
