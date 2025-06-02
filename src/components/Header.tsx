@@ -9,6 +9,7 @@ import { saveHistory } from "@/utils/supabase/history";
 
 import {loadStripe} from "@stripe/stripe-js"
 import Image from "next/image";
+import Link from "next/link";
 
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
@@ -54,7 +55,7 @@ const Header = () => {
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
             <div className="flex-1 flex-row items-center justify-center mt-2">
-                <Image src={"/images/img.png"} alt="icon" width={150} height={50} />
+                <Link href={"/"}><Image src={"/images/img.png"} alt="icon" width={150} height={50} /></Link>
             </div>
 
             <div className="flex items-center">

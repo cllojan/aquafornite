@@ -1,13 +1,11 @@
 'use client'
 import Header from '@/components/Header'
 import User from '@/components/user';
-import { getUser } from '@/utils/getUser';
-import { getHistory } from '@/utils/supabase/history';
 import { useUser } from '@clerk/nextjs';
 import { Icon } from '@iconify/react/dist/iconify.js';
-import { tr } from 'framer-motion/client';
 import { format } from "date-fns";
 import React, { useEffect, useState } from 'react'
+
 interface HistoryItems{
     name:string,
     image:string,
@@ -44,7 +42,7 @@ export default function UserPage() {
                 <div className="layout-content-container flex flex-col max-w-[920px] flex-1">
                     <User data={user} />
                     <h2 className="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Historial de compra</h2>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto h-full">
                         <table className="table">
                             {/* head */}
                             <thead>
