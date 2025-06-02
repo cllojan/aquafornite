@@ -62,12 +62,12 @@ const Header = () => {
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
                     <div className="drawer-content">
                         {/* Page content here */}
-                        <label htmlFor="my-drawer-4" className="drawer-button btn btn-ghost">
+                        <label htmlFor="my-drawer-4" className="drawer-button border-none btn btn-ghost hover:bg-transparent hover:border-none ">
 
                             {
                                 items.length === 0
                                     ?
-                                    <div className=" flex flex-row p-0">
+                                    <div className=" flex flex-row ">
                                         <Icon icon="solar:cart-large-2-outline" fontSize={28} />
                                     </div>
                                     :
@@ -184,7 +184,7 @@ const Header = () => {
                         <div className=" dropdown dropdown-end">
                             <SignInButton>
                                 <button className="btn btn-primary m-0 p-0 w-30 ">
-                                    Inicia Sesión
+                                    Iniciar Sesión
                                 </button>
                             </SignInButton>
                         </div>
