@@ -6,8 +6,9 @@ import { Icon } from "@iconify/react";
 import { useSkinCart } from "@/hooks/useSkinCart";
 import { ShopCartBold } from "@/components/icons/ShopCartBold"
 import { saveHistory } from "@/utils/supabase/history";
-import { redirectToCheckout } from "@/lib/stripe/pay";
+
 import {loadStripe} from "@stripe/stripe-js"
+import Image from "next/image";
 
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
@@ -52,9 +53,8 @@ const Header = () => {
     }
     return (
         <div className="navbar  shadow-sm pl-8 pr-8 z-3">
-            <div className="flex-1 flex-row items-center">
-
-                <img src="favicon.ico" alt="icon"  />
+            <div className="flex-1 flex-row items-center justify-center mt-2">
+                <Image src={"/images/img.png"} alt="icon" width={150} height={50} />
             </div>
 
             <div className="flex items-center">
