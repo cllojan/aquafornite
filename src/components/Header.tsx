@@ -183,8 +183,8 @@ const Header = () => {
                     </div> :
                         <div className=" dropdown dropdown-end">
                             <SignInButton>
-                                <button className="btn btn-primary">
-                                    Iniciar Session
+                                <button className="btn btn-primary m-0 p-0 w-30 ">
+                                    Inicia Sesión
                                 </button>
                             </SignInButton>
                         </div>
