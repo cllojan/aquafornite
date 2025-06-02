@@ -77,7 +77,7 @@ export default function SkinGridInfinite({groupedSkins}:Props){
                         />
 
 
-                        <div className="w-full pl-2 pr-2 pb-10  translate-y-8 absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 transition-transform duration-300">
+                        <div className={`w-full pl-2 pr-2 pb-10  ${isMobile ? '-translate-y-7' : 'translate-y-8'} absolute bg-gradient-to-t from-zinc-900  ellipsis to-transparent bottom-[-50] z-9 pb-2  group-hover:-translate-y-8 transition-transform duration-300`}>
                           <div className="flex flex-col">
                             <span className="text-white/75 text-sm">{skin.price.finalPrice} V-BUCKS - {skin.discount} USD</span>
                             <span className="text-white  font-semibold truncate ellipsis">{skin.displayName}</span>
