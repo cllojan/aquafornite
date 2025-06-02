@@ -37,6 +37,6 @@ export async function getSkins(){
             }
         })
     )*/
-    const categories = ["All", ...Object.keys(filteredSkins)];
+    const categories = ["Todos", ...Object.keys(filteredSkins)];
     return {skins, categories}
 }   

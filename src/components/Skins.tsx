@@ -1,11 +1,9 @@
 'use client'
 
 import { OrderSkins } from "@/utils/OrderSkins";
-import { useEffect, useState, useMemo, useDeferredValue, FormEvent } from "react";
-import Skin, { SkinWithBlur, SkinWithDiscount } from "@/interfaces/skin.interface";
+import { useState, useMemo, FormEvent } from "react";
+import Skin, {  SkinWithDiscount } from "@/interfaces/skin.interface";
 
-import ImageBlur from "./ImageBlur";
-import Image from "next/image";
 import SkinGridInfinite from '@/components/InfiniteSkins';
 
 const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: string[] }) => {
@@ -13,14 +11,12 @@ const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: s
   const [searchQuery, setSearchQuery] = useState("");
 
   const [rarity, setRarity] = useState("All");
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("Todos");
 
   const [sortBy, setSortBy] = useState("");
 
-
   const [listSkins, setListSkins] = useState<Skin[]>([]);
-  const [listCategory, setListCategory] = useState<string[]>(["All"]);
-
+  const [listCategory, setListCategory] = useState<string[]>(["Todos"]);
 
 
 
@@ -47,12 +43,12 @@ const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: s
 
 
   const rari = [
-    { key: "All", label: "All" },
-    { key: "common", label: "Common" },
-    { key: "epic", label: "Epic" },
-    { key: "legendary", label: "Legendary" },
-    { key: "rare", label: "Rare" },
-    { key: "uncommon", label: "Uncommon" },
+    { key: "All", label: "Todos" },
+    { key: "Common", label: "Común" },
+    { key: "Epic", label: "Epico" },
+    { key: "Legendary", label: "Legendario" },
+    { key: "Rare", label: "Raro" },
+    { key: "Uncommon", label: "Poco común" },
   ]
 
    const sortByItems = [
@@ -84,8 +80,8 @@ const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: s
             >
               {rari.map((item) => (
                 <option
-                  key={item.label}
-                  value={item.label}
+                  key={item.key}
+                  value={item.key}
                 >
                   {item.label}
                 </option>
@@ -100,7 +96,6 @@ const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: s
             >
               {categories.map((item, inx) => (
                 <option
-
                   key={inx}
                   value={item}>
                   {item}

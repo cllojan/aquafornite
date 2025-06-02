@@ -12,13 +12,10 @@ export function OrderSkins(skins: SkinWithDiscount[], filters:{
     itemsFilter = skins.filter(skin => {
         if (filters.search && !skin.displayName.toLowerCase().includes(filters.search.toLowerCase())) return false;
         if (filters.rarity && filters.rarity !== "All" && !skin.rarity?.id.includes(filters.rarity)) return false;
-        if (filters.category && filters.category !== "All" && !skin.section.name.includes(filters.category)) return false;
+        if (filters.category && filters.category !== "Todos" && !skin.section.name.includes(filters.category)) return false;
 
         return true
     })
-
-
-
     
     let filteredSkins: Record<string, SkinWithDiscount[]> = {};
     itemsFilter.forEach((item:any) => {
@@ -55,7 +52,7 @@ export function OrderSkins(skins: SkinWithDiscount[], filters:{
     for(const key of groupkeys){
         orderedFilteredSkins[key] = filteredSkins[key];
     }
-    const categories = ["All", ...Object.keys(groupkeys)];
-
+    const categories = ["Todos", ...Object.keys(groupkeys)];
+    console.log(categories)
     return { filteredSkins:orderedFilteredSkins, categories }
 }
