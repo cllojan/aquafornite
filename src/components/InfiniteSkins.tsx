@@ -52,7 +52,7 @@ export default function SkinGridInfinite({groupedSkins}:Props){
 
             <div className="flex flex-col " key={key}>
               <h2 className="text-2xl font-semibold mt-8">{key}</h2>
-              <div className=" grid grid-cols-2 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
+              <div className=" grid grid-cols-2 gap-2 md:gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
                 {
                   value.map((skin, idx) => {                    
                     return (
@@ -61,7 +61,7 @@ export default function SkinGridInfinite({groupedSkins}:Props){
                         onClick={() => { 
                           if (isMobile) addItem(skin)
                         }}
-                        className="group card image-full flex-shrink-0 h-[280px] max-w-xs relative overflow-hidden cursor-pointer shadow-[0px_0px_80px_-44px_rgba(0,_0,_0,_0.7)]"
+                        className="group card image-full flex-shrink-0  h-[230px] md:h-[280px] max-w-xs relative overflow-hidden cursor-pointer shadow-[0px_0px_80px_-44px_rgba(0,_0,_0,_0.7)]"
                         style={{
                           background: skin.colors.color1,
                           backgroundImage: `linear-gradient(180deg, ${skin.colors.color1} 0%, ${skin.colors.color2} 50%, ${skin.colors.color3})`
