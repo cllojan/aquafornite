@@ -83,7 +83,7 @@ const Header = () => {
                     </div>
                     <div className="drawer-side z-100">
                         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                        <div className=" menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                        <div className=" menu bg-base-200 text-base-content min-h-full w-70 md:w-80 p-4">
                             {/* Sidebar content here */}
                             <div className="flex items-center mb-10">
                                 <h1 className="flex-1 text-lg">Carrito de compras</h1>
@@ -160,7 +160,7 @@ const Header = () => {
                                     ''
                                     :
                                     (
-                                        <div className="fixed bottom-0 pl-3 pr-5 pb-5 w-80 flex flex-col  bg-base-200  ">
+                                        <div className="fixed bottom-0 pl-3 pr-5 pb-5 w-70 md:w-80 flex flex-col  bg-base-200  ">
                                             <span className="text-lg font-bold">{items.length} skins</span>
                                             <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
                                             <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
