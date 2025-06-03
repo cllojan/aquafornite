@@ -7,7 +7,7 @@ import { useSkinCart } from "@/hooks/useSkinCart";
 import { ShopCartBold } from "@/components/icons/ShopCartBold"
 import { saveHistory } from "@/utils/supabase/history";
 
-import {loadStripe} from "@stripe/stripe-js"
+import { loadStripe } from "@stripe/stripe-js"
 import Image from "next/image";
 import Link from "next/link";
 
@@ -58,8 +58,8 @@ const Header = () => {
                 <Link href={"/"}><Image src={"/images/img.png"} alt="icon" width={150} height={50} /></Link>
             </div>
 
-            <div className="flex items-center">
-                <div className="drawer drawer-end">
+            <div className="  flex items-center">
+                <div className="  relative drawer drawer-end">
                     <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
                     <div className="drawer-content">
                         {/* Page content here */}
@@ -83,7 +83,7 @@ const Header = () => {
                     </div>
                     <div className="drawer-side z-100">
                         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-                        <div className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
+                        <div className=" menu bg-base-200 text-base-content min-h-full w-80 p-4">
                             {/* Sidebar content here */}
                             <div className="flex items-center mb-10">
                                 <h1 className="flex-1 text-lg">Carrito de compras</h1>
@@ -94,7 +94,7 @@ const Header = () => {
                                     </label>
                                 </div>
                             </div>
-                            <div className="flex w-full flex-col">
+                            <div className=" flex w-full flex-col">
                                 {
                                     items.length === 0
                                         ?
@@ -132,27 +132,42 @@ const Header = () => {
                                         ))
 
                                 }
+                                <div className="" >
+                                    <div className="w-full h-20 flex flex-row ">
+
+
+                                        <div className="ml-4 flex flex-1 flex-col">
+                                            <div className="flex justify-between  font-medium ">
+                                                <h3 ></h3>
+                                                <p className="ml-4"></p>
+                                            </div>
+                                            <div className="flex flex-1 items-end justify-between text-sm">
+                                                <p className="text-gray-500"></p>
+                                                <span className="group cursor-pointer"> </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
 
                             </div>
-                            {
-                                items.length == 0 ? 
-                                
+                           
+
+                        </div>
+                        {
+                                items.length == 0 ?
                                     ''
                                     :
                                     (
-                                        <>
-                                        
-                            <span className="text-lg font-bold">{items.length} skins</span>
-                            <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
-                            <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
-                            <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
-                            </>
+                                        <div className="fixed bottom-0 pl-3 pr-5 pb-5 w-80 flex flex-col  bg-base-200  ">
+                                            <span className="text-lg font-bold">{items.length} skins</span>
+                                            <span className="text-info text-base ">Total: {total.toFixed(2)}</span>
+                                            <button className="mt-5 btn btn-success btn-block" onClick={handlePay}>Comprar<Icon icon="solar:wallet-money-bold" fontSize={25} /></button>
+                                            <input id="my-drawer-4" type="checkbox" className="drawer-toggle btn btn-ghost btn-circle" />
+                                        </div>
                                     )
-                                
-                            }
-
-                        </div>
-
+                            }             
                     </div>
                 </div>
 
