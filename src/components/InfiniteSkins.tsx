@@ -52,7 +52,7 @@ export default function SkinGridInfinite({groupedSkins}:Props){
 
             <div className="flex flex-col " key={key}>
               <h2 className="text-2xl font-semibold mt-8">{key}</h2>
-              <div className=" grid grid-cols-1 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
+              <div className=" grid grid-cols-2 gap-4 mt-4  xl:gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 ">
                 {
                   value.map((skin, idx) => {                    
                     return (
