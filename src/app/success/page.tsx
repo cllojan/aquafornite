@@ -5,24 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-async function loadProducts(){
-    const history = {
-    user_id: 'user_abc123',
-    items: [
-      { name: 'Skin Legendaria', price: 12.99, image: 'https://...' },
-      { name: 'Pickaxe', price: 7.5, image: 'https://...' }
-    ],
-    total: 20.49
-  };
-    const data = await fetch('http://localhost:3000/api/history',{
-        method:'POST',
-        headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(history)
-    })
-    return data;
-}
+
 export default  function Success(){
     
     const {items, removeAll} =  useSkinCart();
