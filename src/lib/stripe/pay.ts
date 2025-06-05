@@ -1,5 +1,5 @@
 import {loadStripe} from "@stripe/stripe-js"
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
+const stripePromise = loadStripe(process.env.STRIPE_SECRET_KEY as string)
 
 export async function redirectToCheckout(items:any[]){
     const res = await fetch('api/checkout',{
