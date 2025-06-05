@@ -4,8 +4,8 @@ import withPlaiceholder from "@plaiceholder/next";
 const nextConfig: NextConfig = {
   env:{
     APIKEY_FORTNITE:'d60d4e00-59f21374-a1c3d875-f9975241',
-    STRIPE_SECRET_KEY:"sk_test_51RTSvpCIPotlomeybthz6DrLxR9epjcydnceiGhlEMdJi3yVrpkYvC3ukqg1HOmvJf5ZL8G90iRGvvuNzAJ0Bpgo00g9zlOtCu",
-    STRIPE_PUBLISHABLE_KEY:"pk_test_51RTSvpCIPotlomeysXsp7a4s63KFL6QG8iNLQGXHRyzjurphyEJ7H7TxrpPLA4gdNIJSixe6tRxF8obk66iGkeWM005ZghfPph"
+    STRIPE_SECRET_KEY:"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",
+    STRIPE_PUBLISHABLE_KEY:"pk_live_51QXYdNLSFgbzik2dKWcPkIvtJ0NR2eiO42JxzoFZh1UyKMHhSXpHGCEYQUPPgH2uICSIaquMDy0Q0DZUkrpvrNsA00dw5hWXOV"
   },
   images:{
         
