@@ -36,6 +36,17 @@ export async function POST(req: NextRequest) {
       payment_method_types: ['card'],
       line_items: LineItems,
       mode: 'payment',
+      custom_fields:[
+        {
+          key:'id_fortnite',
+          label:{
+            type:'custom',
+            custom: 'ID Fortnite'
+          },
+          type:'text',
+          
+        }
+      ],
       success_url: `${req.nextUrl.origin}/success`,
       cancel_url: `${req.nextUrl.origin}/`,
     });

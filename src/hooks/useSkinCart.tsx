@@ -14,7 +14,7 @@ interface SkinStore {
     
 }
 
-export const useSkinCart = create(persist<SkinStore>((set,get) => ({
+export const useSkinCart = create<SkinStore>((set,get) => ({
     items:[],
     addItem:(data:SkinWithDiscount) => {
         const currentItems = get().items
@@ -48,7 +48,4 @@ export const useSkinCart = create(persist<SkinStore>((set,get) => ({
     removeAll:() => set({items:[]}),
     
     
-}),{
-    name:'skin-cart',
-    storage:createJSONStorage(() => localStorage)
 }))
