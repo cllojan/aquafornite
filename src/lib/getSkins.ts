@@ -1,7 +1,9 @@
 import Skin, { SkinWithBlur, SkinWithDiscount } from "@/interfaces/skin.interface";
 import { getPlaiceholder } from "plaiceholder";
 
-export async function getSkins(){
+export async function getSkins() {
+    try{
+        
     const res = await fetch("https://fortniteapi.io/v2/shop?lang=es", {
         headers : {
             authorization: `${process.env.APIKEY_FORTNITE}`
@@ -39,4 +41,11 @@ export async function getSkins(){
     )*/
     const categories = ["Todos", ...Object.keys(filteredSkins)];
     return {skins, categories}
+    }catch(error){
+        console.error(error)
+        return {
+            skins:[],
+            categories:[]
+        }
+    }
 }   

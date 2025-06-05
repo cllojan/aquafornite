@@ -94,7 +94,7 @@ const Skins = ({ skins, categories }: { skins: SkinWithDiscount[], categories: s
               className=" w-full select"
               name="category"
             >
-              {categories.map((item, inx) => (
+              {categories?.map((item, inx) => (
                 <option
                   key={inx}
                   value={item}>
