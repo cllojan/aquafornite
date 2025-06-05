@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY as string)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string)
 const Header = () => {
 
     const [theme, setTheme] = useState('corporate');
