@@ -1,7 +1,7 @@
 import {query } from '@/lib/db';
 import { RowDataPacket } from 'mysql2';
 import { NextRequest, NextResponse } from 'next/server';
-
+export const runtime = "edge";
 export async function GET(req: NextRequest){
     const {searchParams} = new URL(req.url);
     const userId = searchParams.get('user_id');
