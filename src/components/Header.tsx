@@ -5,9 +5,8 @@ import { SignInButton, SignOutButton, UserButton, useUser } from "@clerk/nextjs"
 import { Icon } from "@iconify/react";
 import { useSkinCart } from "@/hooks/useSkinCart";
 import { ShopCartBold } from "@/components/icons/ShopCartBold"
-import { saveHistory } from "@/utils/supabase/history";
 
-import { loadStripe } from "@stripe/stripe-js"
+
 import Image from "next/image";
 import Link from "next/link";
 
