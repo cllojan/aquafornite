@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string)
+
 const Header = () => {
 
     const [theme, setTheme] = useState('corporate');
@@ -22,18 +22,8 @@ const Header = () => {
     const total = skins.reduce((total, price) => total + price, 0)
     useEffect(() => {
         document.querySelector('html')?.setAttribute('data-theme', theme);
-    }, [theme])
-    const handlesave = async () => {
-        try {
-            await saveHistory()
-            alert("aaa");
-        } catch (e) {
-            console.log(e);
-        }
-    }
-    console.log(items)
-    const handlePay = async () => {
-        const stripe = await stripePromise;
+    }, [theme])    
+    const handlePay = async () => {        
         const formatedItems = items.map(item => ({
             name: item.displayName,
             price: item.discount,
